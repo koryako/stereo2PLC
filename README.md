@@ -67,3 +67,18 @@ CV_CALIB_ZERO_TANGENT_DIST：设定切向畸变参数（p1,p2）为零。
 CV_CALIB_FIX_K1,...,CV_CALIB_FIX_K6：对应的径向畸变在优化中保持不变。
 CV_CALIB_RATIONAL_MODEL：计算k4，k5，k6三个畸变参数。如果没有设置，则只计算其它5个畸变参数。
 
+
+
+获取景深图
+
+
+
+转成点云
+
+详细原理请阅读这篇文章http://www.360doc.com/content/14/0205/15/10724725_349968116.shtml.
+
+
+
+![视差公式](http://180.76.148.87/shichatu1.png)
+
+![视差远离](http://180.76.148.87/shichatu2.png)

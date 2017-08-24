@@ -1,6 +1,37 @@
 #include<stdio.h>
 #include<opencv2/opencv.hpp>
 using namespace cv;
+
+//by shuishui shiwenjun 20160926
+#include <pcl/visualization/cloud_viewer.h>
+#include <iostream>  
+#include <pcl/io/io.h>  
+#include <pcl/io/pcd_io.h>  
+
+
+
+using namespace std;
+using namespace pcl;
+
+int user_data;
+//相机内参，根据输入改动
+const double u0 = 1329.49 / 4;//由于后面resize成原图的1/4所以有些参数要缩小相同倍数
+const double v0 = 954.485 / 4;
+const double fx = 6872.874 / 4;
+const double fy = 6872.874 / 4;
+const double Tx = 174.724;
+const double doffs = 293.97 / 4;
+
+void viewerOneOff(visualization::PCLVisualizer& viewer)
+{
+    viewer.setBackgroundColor(0.0, 0.0, 0.0);
+}
+
+
+
+
+
+
 int main()
 {
 
@@ -117,6 +148,69 @@ for (int i=0; i<image_count; i++)
 }     
 std::cout<<"完成保存"<<endl;   
 fout<<endl;
+//本代码运行需要在VS上配置好opencv3.1+openNI+PCL，opencv3.1的配置可以在网上找到很多资料，openNI和PCL的配置可以参看上一篇博文下http://blog.csdn.net/u014283958/article/details/52599457 
+
+ PointCloud<PointXYZRGB> cloud_a;
+    PointCloud<PointXYZRGB>::Ptr cloud(new PointCloud<PointXYZRGB>);
+
+
+
+    Mat color1 = imread("im0.png");
+    Mat depth = imread("Sword1_perfect_d.png");
+    ////Resize
+    //color1.resize();
+    Mat color;
+    resize(color1, color, Size(color1.cols/4,color1.rows/4), 0, 0, CV_INTER_LINEAR);
+    //imshow("h",color);
+    //waitKey(0);
+
+    int rowNumber = color.rows;
+    int colNumber = color.cols;
+
+    cloud_a.height = rowNumber;
+    cloud_a.width = colNumber;
+    cloud_a.points.resize(cloud_a.width * cloud_a.height);
+
+    for (unsigned int u = 0; u < rowNumber; ++u)
+    {
+        for (unsigned int v = 0; v < colNumber; ++v)
+        {
+            /*unsigned int num = rowNumber*colNumber-(u*colNumber + v)-1;*/
+            unsigned int num = u*colNumber + v;
+            double Xw = 0, Yw = 0, Zw = 0;
+
+
+            Zw = fx*Tx / (((double)depth.at<Vec3b>(u, v)[0]) + doffs);
+            Xw = (v+1 - u0) * Zw / fx;
+            Yw = (u+1 - v0) * Zw / fy;
+
+            cloud_a.points[num].b = color.at<Vec3b>(u, v)[0];
+            cloud_a.points[num].g = color.at<Vec3b>(u, v)[1];
+            cloud_a.points[num].r = color.at<Vec3b>(u, v)[2];
+
+            cloud_a.points[num].x = Xw;
+            cloud_a.points[num].y = Yw;
+            cloud_a.points[num].z = Zw;
+        }
+    }
+
+    *cloud = cloud_a;
+
+    visualization::CloudViewer viewer("Cloud Viewer");
+
+    viewer.showCloud(cloud);
+
+    viewer.runOnVisualizationThreadOnce(viewerOneOff);
+
+    while (!viewer.wasStopped())
+    {
+        user_data = 9;
+    }
+
+    return 0;
+
+
+
 }
 
 
