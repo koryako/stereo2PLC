@@ -5,9 +5,9 @@ u=x/dx+u0 v=y/dy+v0
 u,v 为图像坐标 单位为像素 
 dx 和dy 是感光片的长度和宽度
       
-U   | 1/dx   0    U0 |      x
-V  =|   0   1/dy  V0 |  *   y
-1   |   0    0     1 |      1
+       U   | 1/dx   0    U0 |      x
+       V  =|   0   1/dy  V0 |  *   y
+       1   |   0    0     1 |      1
 
 相机坐标系
 x=f(Xc/Zc), y=f(Yc/Zc)
