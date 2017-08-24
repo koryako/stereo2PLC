@@ -22,10 +22,14 @@ x=f(Xc/Zc), y=f(Yc/Zc)
 
 世界坐标系
 
+
+
        Xc          Xw
        Yc =(R|T) * Yw 
        Zc          Zw
                    1
+
+
 
 由以上得
 
