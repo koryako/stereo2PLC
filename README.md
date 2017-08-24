@@ -37,7 +37,7 @@ x=f(Xc/Zc), y=f(Yc/Zc)
             U     |1/dx      0    U0 |   | f 0 0 |          Xw
        Zc * V   = | 0      1/dy   V0 | * | 0 f 0 | *(R|T)*  Yw
             1     | 0        0     1 |   | 0 0 1 |          Zw
-                                                      1
+                                                             1
                   | fx 0  U0 |       Xw           Xw
                 = | 0  fy V0 | (R|T) Yw  = M1 M2  Yw
                   | 0  0  1  |       Zw           Zw
